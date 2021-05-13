@@ -10,6 +10,15 @@ public class Materia {
 
     }
 
+    public Materia(int codigo, String materia, String data) {
+        this.codigo = codigo;
+        this.materia = materia;
+        this.data = data;
+    }
+
+    public Materia(int parseInt, String string, String string1, String string2) {
+    }
+
     public  int getCodigo(){
         return codigo;
     }
