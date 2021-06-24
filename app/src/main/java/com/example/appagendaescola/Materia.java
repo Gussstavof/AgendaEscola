@@ -3,43 +3,46 @@ package com.example.appagendaescola;
 public class Materia {
 
     int codigo;
-    String materia;
     String data;
+    String materia;
 
-    public Materia(){
 
+    public Materia() {
     }
 
-    public Materia(int codigo, String materia, String data) {
+    public Materia(int codigo, String data, String materia) {
         this.codigo = codigo;
-        this.materia = materia;
         this.data = data;
+        this.materia = materia;
     }
 
-    public Materia(int parseInt, String string, String string1, String string2) {
+    public Materia(String data, String materia) {
+        this.data = data;
+        this.materia = materia;
     }
 
-    public  int getCodigo(){
+    public int getCodigo() {
         return codigo;
     }
 
-    public  void  setCodigo(int codigo){
+    public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
 
-    public String getMateria(){
-        return materia;
-    }
-
-    public void setMateria(String materia){
-        this.materia = materia;
-    }
-
-    public String getData(){
+    public String getData() {
         return data;
     }
 
-    public void  setData(String data){
+    public void setData(String data) {
         this.data = data;
     }
+
+    public String getMateria() {
+        return materia;
+    }
+
+    public void setMateria(String materia) {
+        this.materia = materia;
+    }
+
 }

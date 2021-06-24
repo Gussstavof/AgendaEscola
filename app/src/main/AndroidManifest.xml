@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppAgendaEscola">
-        <activity android:name=".Print"></activity>
+        <activity android:name=".PrintDados" />
         <activity android:name=".Calendar" />
         <activity android:name=".MainActivity">
             <intent-filter>

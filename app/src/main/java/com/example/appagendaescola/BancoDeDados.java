@@ -11,28 +11,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BancoDeDados extends SQLiteOpenHelper{
-    public static  final int VERSAO_BANCO = 1;
-    public  static final String BANCO_AGENDA_ESCOLA = "agendaEscola";
+    public static final int VERSAO_BANCO = 1;
+    public static final String BANCO_AGENDA = "AgendaEscola";
 
-    public BancoDeDados(@Nullable Context context){
-        super( context, BANCO_AGENDA_ESCOLA, null, VERSAO_BANCO );
+    public BancoDeDados(@Nullable Context context) {
+
+        super( context, BANCO_AGENDA, null, VERSAO_BANCO );
     }
 
-    public static final String TABELA_LICAO = "tabelaLicao";
-    public static final String COLUNA_MATERIA = "colunaMateria";
-    public static final String COLUNA_DATA = "colunaData";
-    public static final String ID = "codigo";
+
+    public static final String TABELA = "tabela_Materia";
+
+    public static final String COLUNA_CODIGO = "codigo";
+    public static final String COLUNA_DATA = "data";
+    public static final String COLUNA_MATERIA = "materia";
+
+
 
     @Override
-    public  void  onCreate(SQLiteDatabase db){
-        String CRIAR_TABELA = "CREATE TABLE "+ TABELA_LICAO + "(" +  ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + " TEXT, "
-                + COLUNA_MATERIA + " TEXT, " + COLUNA_DATA + " TEXT)";
+    public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL(CRIAR_TABELA);
+        String CRIAR_TABELA = "CREATE TABLE " + TABELA + "(" + COLUNA_CODIGO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUNA_DATA + " TEXT,"
+                + COLUNA_MATERIA + " TEXT)";
+
+        db.execSQL( CRIAR_TABELA );
+
 
     }
 
-    void addLicao(Materia materia){
+    void addMateria(Materia materia){
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues valor = new ContentValues();
@@ -40,72 +48,83 @@ public class BancoDeDados extends SQLiteOpenHelper{
         valor.put(COLUNA_DATA, materia.getData());
         valor.put(COLUNA_MATERIA, materia.getMateria());
 
-        db.insert(TABELA_LICAO, null, valor);
+
+        db.insert(TABELA, null, valor);
         db.close();
-
     }
 
-    void deleteLicao(Materia materia){
+    void apagarMateria(Materia materia) {
+
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABELA_LICAO, ID + " =?", new String[]{
-                String.valueOf( materia.getCodigo() )
-        });
+        db.delete( TABELA, COLUNA_CODIGO + " =?", new String[]{
+                String.valueOf( materia.getCodigo() )} );
 
+        db.close();
     }
 
-    Materia selectLicao(int codigo ){
+    Materia selecionarMateria(int codigo) {
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABELA_LICAO, new String[]{
-                ID, COLUNA_DATA, COLUNA_MATERIA}, ID+ " =?",new String[]{String.valueOf( codigo )}, null, null, null, null );
+        Cursor cursor = db.query( TABELA, new String[]{
+                        COLUNA_CODIGO, COLUNA_DATA, COLUNA_MATERIA},
+                COLUNA_CODIGO + " =?", new String[]{String.valueOf( codigo )}, null, null, null, null );
 
-        if(cursor != null){
+        if (cursor != null) {
             cursor.moveToFirst();
         }
 
-        Materia materia = new Materia(Integer.parseInt( cursor.getString(0)), cursor.getString(1),cursor.getString(2));
 
-        return  materia;
+        Materia materia = new Materia( Integer.parseInt( cursor.getString(0)), cursor.getString( 1 ),
+                cursor.getString(2));
+
+        return materia;
 
     }
 
-
     void atualizarMateria(Materia materia){
+
         SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues valor = new ContentValues();
 
         valor.put(COLUNA_DATA, materia.getData());
         valor.put(COLUNA_MATERIA, materia.getMateria());
 
-        db.update(TABELA_LICAO, valor, ID + " =?", new String[]{
-                String.valueOf(materia.getCodigo())
-        });
+
+        db.update(TABELA, valor, COLUNA_CODIGO + " = ?",
+                new String[]{String.valueOf( materia.getCodigo())});
     }
 
-    public List<Materia> materiaList(){
+
+    public List<Materia> listarMateria() {
+
         List<Materia> materiaList = new ArrayList<>();
 
-        String query = "SELECT * FROM " + TABELA_LICAO;
+        String query = "SELECT * FROM " + TABELA;
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor c = db.rawQuery(query, null);
+        Cursor c = db.rawQuery( query, null );
 
-        if (c.moveToFirst()){
+        if (c.moveToFirst()) {
             do {
                 Materia materia = new Materia();
-                materia.setCodigo( Integer.parseInt( c.getString(0) != null ? c.getString(0) : "0"));
-                materia.setData(c.getString(1));
-                materia.setMateria(c.getString(2));
+                materia.setCodigo( Integer.parseInt( c.getString( 0 ) != null ? c.getString( 0 ) : "0" ) );
+                materia.setData( c.getString( 1 ) );
+                materia.setMateria( c.getString( 2 ) );
 
-                materiaList.add(materia);
-            }
-            while (c.moveToNext());
+
+                materiaList.add( materia );
+
+            } while (c.moveToNext());
+
         }
-        return  materiaList;
+
+        return materiaList;
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
 }
+
